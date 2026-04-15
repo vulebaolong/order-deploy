@@ -1,0 +1,23 @@
+name: ci
+
+on:
+    push: 
+        branches: ["main"]
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
+
+        steps:
+            - uses: actions/checkout@v4
+
+            - name: Đăng nhập vào docker hub
+              run: docker login -u vulebaolong -p ${{secrets.PASS_DOCKER}}
+
+            - name: Build image
+              run: docker build -t vulebaolong/img-order:latest .
+
+            - name: Push image lên docker hub
+              run: docker push vulebaolong/img-order:latest
+
+  

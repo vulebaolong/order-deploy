@@ -1,0 +1,25 @@
+name: cd
+
+on:
+    workflow_run: 
+        workflows: ["ci"]
+        types: 
+            - completed
+
+jobs:
+    start:
+        runs-on: node_54
+
+        steps:
+            - name: Dừng container BE
+              run: sudo docker container stop con-order_dc
+
+            - name: Xoá container BE
+              run: sudo docker container remove con-order_dc
+
+            - name: Xoá image BE
+              run: sudo docker image remove vulebaolong/img-order:latest
+
+            - name: Chạy lại source
+              working-directory: /home/ubuntu/nestjs
+              run: sudo docker compose up -d
